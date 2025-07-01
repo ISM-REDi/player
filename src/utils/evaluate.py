@@ -47,3 +47,31 @@ def authorsLevenshteinDistance(list_A, list_B):
   ld = levenshteinDistance(author_str_a, author_str_b)
 
   return ld
+
+def ngram_set(s, n=2):
+  s = s.lower()
+  return set([s[i:i+n] for i in range(len(s)-n+1)])
+
+def jaccard_distance(s1, s2, n=2):
+  set1 = ngram_set(s1, n)
+  set2 = ngram_set(s2, n)
+  if not set1 and not set2:
+    return 0.0  # 両方空の場合は距離0
+  intersection = set1 & set2
+  union = set1 | set2
+  return 1 - len(intersection) / len(union)
+
+def jaccard_distance_authors(authors1, authors2):
+    set1 = set(a.lower().strip() for a in authors1)
+    set2 = set(a.lower().strip() for a in authors2)
+    
+    if not set1 and not set2:
+        return 0.0  # 両方空なら距離ゼロとする
+    
+    intersection = set1 & set2
+    union = set1 | set2
+    
+    return 1 - len(intersection) / len(union)
+
+def caseJaccardDistance(list_A, list_B):
+  return jaccard_distance_authors(list_A, list_B)
