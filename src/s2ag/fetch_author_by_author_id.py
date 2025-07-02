@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 from config import config
 
 data_dir = sys.argv[1]
-author_name = sys.argv[2]# author/H.-Akaike/2737945
+author_name = sys.argv[2]
 author_id = sys.argv[3]
 org_name = sys.argv[4]
 
@@ -23,7 +23,7 @@ def fetch(output_df, timestamp, offset):
       'org_label': [org_name],
       'paperId': [d.get('paperId')],
       'title': [d.get('title')],
-      'CorpusId': [d.get('externalIds').get('CorpusId')],
+      'corpusId': [d.get('externalIds').get('CorpusId')],
       'journal': [d.get('journal')],
       'year': [d.get('year')],
       'publicationTypes': [d.get('publicationTypes')],

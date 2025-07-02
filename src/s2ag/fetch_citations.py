@@ -97,7 +97,7 @@ def allFetch(corpusId, parentId):
   record = {
       'paperId': d.get('paperId'),
       'title': d.get('title'),
-      'CorpusId': corpusId,
+      'corpusId': corpusId,
       'parentId': parentId,
       'journal': d.get('journal'),
       'year': d.get('year'),
@@ -149,7 +149,7 @@ def run(argv=None):
   isCite = (known_args.cite == 'cite')
   fileTerm = "-citations.parquet" if isCite else "-references.parquet"
 
-  for row in df['CorpusId']:
+  for row in df['corpusId']:
     #list of embedings by one corpusId
     fetch(row, isCite, 0, 0)# !!! CHECK !!!
     time.sleep(10)

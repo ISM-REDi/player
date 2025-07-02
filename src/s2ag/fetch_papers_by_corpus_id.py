@@ -69,7 +69,7 @@ def fetch(corpusId, full_flag):
     record = {
       'paperId': d.get('paperId'),
       'title': d.get('title'),
-      'CorpusId': corpusId,
+      'corpusId': corpusId,
       'journal': d.get('journal'),
       'year': d.get('year'),
       'publicationTypes': d.get('publicationTypes'),
@@ -81,7 +81,7 @@ def fetch(corpusId, full_flag):
   else:
     record = {
       'paperId': d.get('paperId'),
-      'CorpusId': corpusId,
+      'corpusId': corpusId,
       'embedding': d.get('embedding'),
     }
   return record
@@ -97,7 +97,7 @@ def main():
   l = []
   
   for i, row in df.iterrows():
-    record = fetch(row["CorpusId"], True)
+    record = fetch(row["corpusId"], True)
     record["tag"] = row["tag"]
     l.append(record)
     time.sleep(5)

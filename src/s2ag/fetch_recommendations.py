@@ -41,7 +41,7 @@ def run(argv=None):
   df = pd.read_parquet(known_args.input)
   output_df = pd.DataFrame(index=[])
 
-  for row in df['CorpusId']:
+  for row in df['corpusId']:
     fetch(row)
     time.sleep(3)
   output_df =  pd.DataFrame(l)
