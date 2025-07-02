@@ -2,17 +2,18 @@
 name = "player"
 version = "0.1.0"
 description = ""
-authors = ["hhamada@ism.ac.jp"]
+authors = ["Hiroka Hamada <hhamada@ism.ac.jp>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11.2"
 pandas = "2.0"
-numpy = "1.23.2"
+numpy = "^1.23.2"
 seaborn = "^0.13.2"
 pyarrow = "^16.1.0"
 argparse = "^1.4.0"
 requests = "^2.32.3"
+pyrcca = "^0.2"
 adapters = "^1.0.0"
 torch = "^2.4.1"
 datasets = "^3.0.0"

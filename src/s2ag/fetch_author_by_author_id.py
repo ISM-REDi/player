@@ -7,10 +7,13 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 from config import config
 
+# Sample
+# poetry run python src/s2ag/fetch_s2ag_from_author_id.py datas/aic/ Akaike 2737945 AIC
+
 data_dir = sys.argv[1]
-author_name = sys.argv[2]# author/H.-Akaike/2737945
+author_name = sys.argv[2]
 author_id = sys.argv[3]
-org_name = sys.argv[4]
+tag = sys.argv[4]
 
 def fetch(output_df, timestamp, offset):
   fields = '&fields=title,externalIds,journal,year,publicationTypes,s2FieldsOfStudy'
@@ -20,10 +23,10 @@ def fetch(output_df, timestamp, offset):
   for d in response.get('data'):
     data = {
       'author_label': [author_name],
-      'org_label': [org_name],
+      'tag': [tag],
       'paperId': [d.get('paperId')],
       'title': [d.get('title')],
-      'CorpusId': [d.get('externalIds').get('CorpusId')],
+      'corpusId': [d.get('externalIds').get('CorpusId')],
       'journal': [d.get('journal')],
       'year': [d.get('year')],
       'publicationTypes': [d.get('publicationTypes')],
@@ -40,14 +43,15 @@ def fetch(output_df, timestamp, offset):
     print('last offset number = ', offset)
 
 def main():
-  # poetry run python src/player/fetch_s2ag_from_author_id.py datas/rois/ Kitagawa 2829946 ISM
   now = dt.now()
   timestamp = now.strftime('%Y%m%d%H%M%S')
   output_df = pd.DataFrame(index=[])
   
   fetch(output_df, timestamp, 0)
+  output_df.to_csv((data_dir+'fetch_author_%s_%s_'+timestamp+'.csv') % (author_name, author_id))
+
   print("End.")
-  # output_df.to_csv((data_dir+'fetch_author_%s_%s_'+timestamp+'.csv') % (author_name, author_id))
+
 
 if __name__ == '__main__':
     main()

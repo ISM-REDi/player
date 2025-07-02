@@ -40,7 +40,7 @@ def main(argv=None):
   #ax.set_xlim(-1, 100)
   plt.tick_params(labelsize=15)
   ax.grid(True)
-  fig.savefig('./results/akaike_rand_100_trials_optim-100_10_times_ave_ylim500.png')
+  fig.savefig('./results/rand_100_trials_optim-100_10_times_ave_ylim500.png')
 
   return 0
 

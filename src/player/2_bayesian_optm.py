@@ -5,17 +5,9 @@ import itertools
 import datetime
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'../utils/'))
-from player import player
-from evaluate import evaluate
+from utils import util
+from utils import evaluate
 
-file_path_e = "./results/pickup/1/sixtopic_gram_coauthor.parquet"
-file_path_a = "./results/pickup/1/sixtopic_gram_embedding.parquet"
-file_path_keys = "./results/pickup/1/sixtopic_author_matrix_keys.parquet"
-detail_file = "./datas/pickup/fetch_corpusId-embedding_20241024163626.parquet"
-
-df_e = pd.read_parquet(file_path_e)
-df_a = pd.read_parquet(file_path_a)
-df_keys = pd.read_parquet(file_path_keys)
 covariance_type = 'full'#'diag'
 
 score_arr = []
@@ -31,8 +23,8 @@ def clusterLevenshteinDistance(cluster_df):
     cluster_distance_total += tmp_score
   return cluster_distance_total
 
-def calc(cluster_label):
-  df_data = pd.read_parquet(detail_file)
+def calc(cluster_label, paper_detail_file):
+  df_data = pd.read_parquet(paper_detail_file)
   df_keys["cluster_no"] = cluster_label
   df = pd.merge(df_keys, df_data, how="left")
   df.dropna(subset="CorpusId", inplace=True)
@@ -68,16 +60,29 @@ def objective(trial):
 
   # クラスタリング結果の良さを評価する
   # log_likelyfood = clustering_gmm.score(K_combined)
-  ave_levenstine_distance = calc(label)
+  ave_levenstine_distance = calc(label, paper_detail_file)
   player_score = ave_levenstine_distance
 
   score_arr.append(float(format(player_score, '.3f')))
   return player_score
 
 if __name__ == '__main__':
+  save_dir = sys.argv[1]
+  data_dir = sys.argv[2]
+  filelabel = sys.argv[3]
+  paper_detail_file = sys.argv[4]
+
+  file_path_e = data_dir+filelabel+"_gram_coauthor.parquet"
+  file_path_a = data_dir+filelabel+"_gram_embedding.parquet"
+  file_path_keys = data_dir+filelabel+"_author_matrix_keys.parquet"
+
+  df_e = pd.read_parquet(file_path_e)
+  df_a = pd.read_parquet(file_path_a)
+  df_keys = pd.read_parquet(file_path_keys)
+
   start = datetime.datetime.now()
-  param_n_trials = 30
-  save_filename = './results/player_bayesian_optimization_sixtopic.parquet'
+  param_n_trials = 100
+  save_filename = save_dir+filelabel+'_bayesian_optimization.parquet'
   study = optuna.create_study()#direction="maximize"
   study.optimize(objective, n_trials=param_n_trials)
 

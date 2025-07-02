@@ -7,6 +7,10 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 from config import config
 
+# Sample
+# poetry run python src/s2ag/fetch_citations.py --input datas/inputcorpusId.parquet --cite cite
+# poetry run python src/s2ag/fetch_citations.py --input datas/inputcorpusId.parquet --cite ref
+
 l = []
 
 fields_full = '&fields=title,journal,year,publicationTypes,s2FieldsOfStudy,authors,embedding'
@@ -97,7 +101,7 @@ def allFetch(corpusId, parentId):
   record = {
       'paperId': d.get('paperId'),
       'title': d.get('title'),
-      'CorpusId': corpusId,
+      'corpusId': corpusId,
       'parentId': parentId,
       'journal': d.get('journal'),
       'year': d.get('year'),
@@ -149,9 +153,9 @@ def run(argv=None):
   isCite = (known_args.cite == 'cite')
   fileTerm = "-citations.parquet" if isCite else "-references.parquet"
 
-  for row in df['CorpusId']:
+  for row in df['corpusId']:
     #list of embedings by one corpusId
-    fetch(row, isCite, 0, 0)# !!! CHECK !!!
+    fetch(row, isCite, 0, 0)
     time.sleep(10)
   
   output_df =  pd.DataFrame(l)
