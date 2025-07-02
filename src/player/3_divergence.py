@@ -1,6 +1,6 @@
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'../utils/'))
-from player import player
+from utils import util
 import numpy as np
 import pandas as pd
 import time
@@ -39,12 +39,16 @@ def save_results(gmm, cov_type, save_dir, filelabel, size, n):
 def main():
   start = time.time()
   save_dir = sys.argv[1]
-  wv = float(sys.argv[2])
-  wg = float(sys.argv[3])
-  k = int(sys.argv[4])
-  # means_file
-  # covariance_dir
-  datalabel = sys.argv[5]
+  data_dir = sys.argv[2]
+  datalabel = sys.argv[3]
+  data_filename = data_dir+datalabel+'_bayesian_optimization.parquet'
+  
+  df_optim = pd.read_parquet(data_filename)
+  best_score = df_optim.sort_values('timestamp', ascending=False)['scores'].head(1).item()
+  wv = float(best_score['Wv'])
+  wg = float(best_score['Wg'])
+  k = int(best_score['K'])
+ 
   now = dt.datetime.now()
   
   # Read files.
@@ -58,8 +62,8 @@ def main():
   if (not os.path.exists(gaussian_results_save_dir)):
     os.mkdir(gaussian_results_save_dir)
 
-  X_e = player.df_to_ndarray(df_e)
-  X_a = player.df_to_ndarray(df_a)
+  X_e = util.df_to_ndarray(df_e)
+  X_a = util.df_to_ndarray(df_a)
   K_linear = X_e
   K_diffusion = X_a
   # 合成カーネル行列
@@ -68,7 +72,7 @@ def main():
   clustering_gmm = GaussianMixture(n_components=k, covariance_type=covariance_type, random_state=19)
   label = clustering_gmm.fit_predict(K_combined)
 
-  save_cluster(label, df_keys["CorpusId"].to_numpy(), save_dir, datalabel, k, 'GaussianMixture')
+  save_cluster(label, df_keys["corpusId"].to_numpy(), save_dir, datalabel, k, 'GaussianMixture')
   save_results(clustering_gmm, covariance_type, gaussian_results_save_dir, datalabel, len(df_keys), k)
 
   all_covariances = clustering_gmm.covariances_
