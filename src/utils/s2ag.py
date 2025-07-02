@@ -51,7 +51,7 @@ def fetch_embedding(corpusId, parentId):
   dt_now = datetime.datetime.now()
   record = {
     'event_timestamp':dt_now,
-    'corpusId': corpusId,
+    'CorpusId': corpusId,
     'embedding' : embedding,
     'parentId': parentId,
     'created' : dt_now

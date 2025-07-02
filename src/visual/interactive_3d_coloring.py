@@ -48,10 +48,7 @@ def main():
   # df_plot['cluster_no'] = coloring_df['cluster_no']
   df_plot[cluster_type_col] = coloring_df[cluster_type_col].apply(lambda x : f'Cluster{x:03}')
   # df_plot = pd.merge([coloring_df, df])
-  df_plot['color_label'] = df_plot['color_label'].apply(lambda x : str(x))#color_col[0:2]+'_'+
-  # df_plot['color'] = coloring_df.loc[:, 'color']
-  # sort_order = ['情報研','遺伝研','統数研','極地研']
-  # sort_order = ['mirai201603','mirai201604','mirai201703','mirai201801', 'mirai201802', 'mirai201806']
+  df_plot['color_label'] = df_plot['color_label'].apply(lambda x : str(x))
   sort_order = ['kernel','transformer_a','transformer_b','covid-19', 'smartcity', 'fakenews', 'green-economy']
   # sort_order =  ["Environmental Science"
   #   ,"Biology"
