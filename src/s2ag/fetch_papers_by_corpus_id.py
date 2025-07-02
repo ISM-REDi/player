@@ -6,9 +6,12 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 from config import config
 
+# Sample
+# poetry run python src/s2ag/fetch_papers_by_corpus_id.py datas/ datas/aic_corpusId.csv AIC
 
 data_dir = sys.argv[1]
 corpusid_file = sys.argv[2]
+data_label = sys.argv[3]
 
 fields_full = '&fields=title,journal,year,publicationTypes,s2FieldsOfStudy,authors,embedding'
 fields_only_emb = '&fields=embedding'
@@ -102,7 +105,7 @@ def main():
     l.append(record)
     time.sleep(5)
   output_df =  pd.DataFrame(l)
-  output_df.to_parquet(data_dir+'fetch_corpusId-embedding_'+timestamp+'.parquet')
+  output_df.to_parquet(data_dir+'fetch_corpusId-embedding_'+data_label+'_'+timestamp+'.parquet')
   print("End.")
 
 if __name__ == '__main__':

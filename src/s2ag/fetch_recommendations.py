@@ -4,6 +4,10 @@ import pyarrow.parquet as pq
 import time
 import requests
 import utils.s2ag as s2ag
+
+# Sample
+# poetry run python src/s2ag/fetch_recommendations.py --input datas/inputcorpusId.parquet
+
 l = []
 
 def fetch_reccomends(corpusId):
