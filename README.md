@@ -66,6 +66,7 @@ bin/units.sh
 
 ## Project Structure
 
+```
 project-root/
 ├── pyproject.toml # Poetry configuration
 ├── bin/
@@ -81,7 +82,7 @@ project-root/
 │ ├── experiments/ # Sample scripts for experiments
 │ └── config.py # Logic for loading settings (e.g., API key)
 └── README.md # Project documentation
-
+```
 
 ### Explanation
 
